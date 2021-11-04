@@ -1,0 +1,126 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww21380\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 def input_list(tiles):\
+    tempa=[]\
+    for letters in tiles[0]:\
+        tempa.append(letters)\
+    tempb=[]\
+    for letters in tiles[1]:\
+        tempb.append(letters)\
+    return(tempa,tempb)\
+    \
+def scrabble_score(word):\
+    score = \{"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2, "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,"l": 1, "o": 1, "n": 1, "q": 10, "p": 3, "s": 1, "r": 1, "u": 1, "t": 1, "w": 4, "v": 4, "y": 4, "x": 8, "z": 10\}\
+    total= 0\
+    for index in word:\
+        for index1 in index:\
+            total=total+score[index1.lower()]\
+    return total\
+\
+def best_word(plays):\
+    word=''\
+    for index in plays:\
+        score=scrabble_score(index)\
+        if score>scrabble_score(word):\
+            word=index\
+    for index in word:\
+        word=index\
+    x='The best play is '+str(word)+' worth '+str(scrabble_score(word))+' points '\
+    return(x)\
+    \
+def possible_combos(a,b):\
+    import itertools\
+    list_of_possibilities=[]\
+    for index in a:\
+        index=index.upper()\
+        temp=[]\
+        temp.append(index)\
+        for index1 in b:\
+            temp.append(index1)\
+        for r in range(2,(len(temp)+1)):\
+            for word in itertools.permutations(temp,r):\
+                tlist=[''.join(word)]\
+                list_of_possibilities.append(tlist)\
+    return(list_of_possibilities)\
+\
+def possible_plays(wordlist,possibilities):\
+    temp=[]\
+    for index in possibilities:\
+        for index1 in index:\
+            if index1 in wordlist:\
+                temp.append(index)\
+    return(temp)\
+\
+#main.py_file\
+\
+import justin\
+import greg\
+\
+tiles=[]\
+\
+def play_on():\
+    global e1\
+    string=e1.get()\
+    a=string.upper()\
+    tiles.append(a)\
+    string='The tiles you can play on are '+a\
+    text.insert(END,string)\
+    \
+def your_tiles():\
+    global e2\
+    string=e2.get()\
+    b=string.upper()\
+    tiles.append(b)\
+    string='\\nThe tiles that you have are '+b\
+    text.insert(END,string)\
+    set_tiles,your_tiles=justin.input_list(tiles)\
+    word_list=greg.list_of_words()\
+    possibilities=justin.possible_combos(set_tiles,your_tiles)\
+    plays=justin.possible_plays(word_list,possibilities)\
+    string=justin.best_word(plays)\
+    string='\\n'+string\
+    text.insert(END,string)\
+    str1='\\nAll of your possible plays are:'\
+    text.insert(END,str1)\
+    text.insert(END,plays)\
+\
+def convert():\
+    global score_entry\
+    string=score_entry.get()\
+    string=string.upper()\
+    points = str(justin.scrabble_score(string))\
+    points = '\\n'+str(string)+' is worth '+str(points)+' points'\
+    text.insert(END,points)\
+\
+from tkinter import *\
+root=Tk()\
+root.title('Scrabble Cheater')\
+text=Text(root)\
+e1=Entry(root)\
+e1.grid(row=1,column=0)\
+b1=Button(root,text='Enter',command=play_on)\
+b1.grid(row=1,column=1)\
+l1=Label(root,text='Enter What Tiles You Can\\nPlay On Below')\
+l1.grid(row=0,column=0)\
+e2=Entry(root)\
+e2.grid(row=1,column=2)\
+b2=Button(root,text='Enter',command=your_tiles)\
+b2.grid(row=1,column=3)\
+l2=Label(root,text='Enter Your Tiles Below')\
+l2.grid(row=0,column=2)\
+text.grid(row=4,column=4)\
+\
+prompt_label=Label(root,text = 'Enter one of your word options:')\
+prompt_label.grid(row=2,column=0)\
+score_entry=Entry(root)\
+score_entry.grid(row=3,column=0)\
+calc_button=Button(root,text='Enter',command=convert)\
+calc_button.grid(row=3,column=1)\
+\
+root.mainloop()\
+}
